@@ -20,6 +20,7 @@ public class Enemy implements ImageObserver {
 	Random r = new Random();
 	int x,y,v;
 	Image icon;
+	BufferedImage[] sprites;
 	Enemy(int x,int y,int v) {
 		this.x=x;this.y=y;this.v=v;
 		BufferedImage bigImg;
@@ -29,7 +30,7 @@ public class Enemy implements ImageObserver {
 			final int height = 8;
 			final int rows = 5;
 			final int cols = 5;
-			BufferedImage[] sprites = new BufferedImage[rows * cols];
+			sprites = new BufferedImage[rows * cols];
 
 			for (int i = 0; i < rows; i++)
 			{
@@ -52,6 +53,10 @@ public class Enemy implements ImageObserver {
 		}
 	}
 	void move() {
+		
+		x+=v;
+	}
+	void dead() {
 		x+=v;
 	}
 	

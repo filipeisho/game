@@ -50,6 +50,12 @@ public class Window extends Frame implements KeyListener,WindowListener {
 	Game game;
 	int width=800,height=600;
 	
+	Boolean left = false;
+	Boolean space = false;
+	Boolean right = false;
+	Boolean up = false;
+	Boolean down = false;
+
 	Image im;
 	Graphics graphics;
 	public static void main(String[] args) {
@@ -67,10 +73,47 @@ public class Window extends Frame implements KeyListener,WindowListener {
 		game=new Game(this);
 		game.run();
 	}
-	public void update(Graphics graphics) {	//millora la sincronia del pintat
+	public void update(Graphics graphics) {	
+		if (this.left==true) {
+			game.player.moveLeft();
+
+		}
+		if (this.right==true) {
+			game.player.moveRight(width);
+		}
+		if (this.up==true) {
+			game.player.moveUp();
+			game.accepted = true;
+			System.out.println("up");
+
+		}
+		if (this.down==true) {
+			game.player.moveDown(height);
+			game.accepted = false;
+			System.out.println("down");
+
+		}
+		if (this.space==true) {
+			game.player.shoot();
+			this.space=false;
+			game.i = game.i+2;
+			if (game.i>22 && game.scene =="realLife") {
+				if (game.accepted==true) {
+					game.scene="end";
+				}
+				else {
+					game.accepted= true;
+				}
+			}
+		}
+		
+		
+
 		paint(graphics);
+		
 	}
 	public void paint(Graphics graphics) {
+		
 		graphics.drawImage(im,0,0,null);
 	}
 
@@ -78,7 +121,86 @@ public class Window extends Frame implements KeyListener,WindowListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		//Per a saber quina tecla et pitjen, la variable 'e' rebuda cont� la tecla.
+		if (game.scene == "intro") {
+			if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+				game.nextScene();
+			}
+		}
+		if (game.scene == "win") {
+			if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+
+				game.nextScene();
+			}
+		}
+		if (game.scene == "gameOver") {
+			if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+				game.nextScene();
+			}
+		}
+		if (game.scene == "game") {
+			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+				space = true;
+			}
+			if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+				right = false;
+
+			}
+			if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+				left = false;
+
+			}
+			
+			
+		}
+		if (game.scene == "realLife") {
+			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+				space = false;
+
+				
+			}
+			if (e.getKeyCode()==KeyEvent.VK_UP) {
+				up = false;
+
+				
+			}
+			if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+				down = false;
+
+				
+			}
+			
+			
+			
+			
+		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (game.scene == "realLife") {
+			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+				space = true;
+				
+			}
+			if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+				right = true;
+
+			}
+			if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+				left = true;
+
+			}
+			if (e.getKeyCode()==KeyEvent.VK_UP) {
+				up = true;
+			}
+			if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+				down = true;
+
+			}
+			
+			
+			
+		}
 		if (game.scene == "intro") {
 			if (e.getKeyCode()==KeyEvent.VK_ENTER ) {
 				game.nextScene();
@@ -86,21 +208,17 @@ public class Window extends Frame implements KeyListener,WindowListener {
 		}
 		if (game.scene == "game") {
 			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-				game.player.shoot();
-
-			}
+				space = false;
+			}		
 			if (e.getKeyCode()==KeyEvent.VK_LEFT) {
-				game.player.moveLeft();
-
+				left = true;
 			}
 			if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-				game.player.moveRight();
-			}
-		}
-	}
+				right = true;
 
-	@Override
-	public void keyPressed(KeyEvent e) {
+			}
+			
+		}
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {

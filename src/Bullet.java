@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -25,6 +26,21 @@ public class Bullet implements ImageObserver {
 	}
 	void move() {
 		y-=v;
+	}
+	boolean check_collision(List <Enemy> enemyList) {
+		for (int i = 0; i<enemyList.size(); i++) {
+			if (enemyList.get(i).x <= x + 30 && enemyList.get(i).x >= x - 30) {
+				if (enemyList.get(i).y <= y + 20 && enemyList.get(i).y >= y - 20) {
+					//enemyList.get(i).icon = enemyList.get(i).sprites[0];
+					enemyList.remove(i);
+					return true;
+					
+				}
+					
+			}
+		}
+		return false;
+		
 	}
 	
 	
